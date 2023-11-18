@@ -1,0 +1,29 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      max-request-size: 215MB
+      enabled: true
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/likelion
+    username: ehdrb01
+    password: Rlaehdrb12!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  upload:
+    dir: /path/to/upload/directory
+  mvc:
+    cors:
+      allowed-origins: http://localhost:3000
+      allowed-methods: GET,POST,PUT,DELETE,OPTIONS
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    show_sql: true
+
+logging:
+  level:
+    org.hibernate.sql: debug
