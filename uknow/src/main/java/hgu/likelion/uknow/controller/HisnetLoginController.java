@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class HisnetLoginController {
@@ -19,9 +21,11 @@ public class HisnetLoginController {
     }
 
     @PostMapping("/get/{session}")
-    public ResponseEntity<String> getStudentInfo(@PathVariable String session) {
+    public ResponseEntity<List<List<List<String>>>> getStudentInfo(@PathVariable String session) {
         String userInfo = hisnetService.getUserInfo(session);
+        List<List<List<String>>> userInfoList = hisnetService.parseData(userInfo);
 
-        return ResponseEntity.ok(userInfo);
+        return ResponseEntity.ok(userInfoList);
     }
+
 }

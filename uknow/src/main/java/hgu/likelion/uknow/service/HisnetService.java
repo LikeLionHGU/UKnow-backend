@@ -1,23 +1,21 @@
 package hgu.likelion.uknow.service;
 
 import hgu.likelion.uknow.dto.request.HisnetRequest;
-import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -103,7 +101,28 @@ public class HisnetService {
         return decodedResponse;
     }
 
-    public void parseData(String htmlCode) {
+    public List<List<List<String>>> parseData(String htmlCode) {
         Document document = Jsoup.parse(htmlCode);
+        List<List<List<String>>> result = new ArrayList<>();
+
+        // "#att_list" ID를 가진 모든 테이블을 찾아 순회합니다.
+        Elements tables = document.select("table#att_list");
+        for (Element table : tables) {
+            List<List<String>> currentTable = new ArrayList<>();
+            Elements rows = table.select("tbody tr");
+
+            // 각 행(tr)을 순회하면서 셀(td)의 데이터를 추출합니다.
+            for (Element row : rows) {
+                List<String> rowData = new ArrayList<>();
+                Elements cells = row.select("td");
+                for (Element cell : cells) {
+                    rowData.add(cell.text().trim());
+                }
+                currentTable.add(rowData);
+            }
+            result.add(currentTable);
+        }
+
+        return result;
     }
 }
