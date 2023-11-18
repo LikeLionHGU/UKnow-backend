@@ -16,7 +16,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -59,14 +61,46 @@ public class HisnetService {
                 session = sessionPair[1];
             }
         }
-        System.out.println(session);
 
         return session;
     }
 
-    public String getStudentData(String session) {
+    public String getUserInfo(String session) {
+        String url = "https://hisnet.handong.edu/prof/graduate/PGRA123S_gong.php?gubun=hak";
 
-        return null;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Arrays.asList(
+                MediaType.TEXT_HTML,
+                MediaType.APPLICATION_XHTML_XML,
+                MediaType.APPLICATION_XML,
+                new MediaType("image", "avif"),
+                MediaType.valueOf("image/webp"),
+                new MediaType("image", "apng"),
+                MediaType.ALL
+        ));
+        headers.add("Accept-Encoding", "gzip, deflate, br");
+        headers.add("Accept-Language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7");
+        headers.setConnection("keep-alive");
+        headers.add("Cookie", "PHPSESSID=" + session);
+        headers.add("Host", "hisnet.handong.edu");
+        headers.add("Referer", "https://hisnet.handong.edu/haksa/graduate/HGRA120M.php");
+        headers.add("Sec-Ch-Ua", "\"Google Chrome\";v=\"117\", \"Not;A=Brand\";v=\"8\", \"Chromium\";v=\"117\"");
+        headers.add("Sec-Ch-Ua-Mobile", "?0");
+        headers.add("Sec-Ch-Ua-Platform", "\"macOS\"");
+        headers.add("Sec-Fetch-Dest", "frame");
+        headers.add("Sec-Fetch-Mode", "navigate");
+        headers.add("Sec-Fetch-Site", "same-origin");
+        headers.add("Sec-Fetch-User", "?1");
+        headers.add("Upgrade-Insecure-Requests", "1");
+        headers.add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36");
+
+        HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
+        Charset charset = Charset.forName("EUC-KR");
+
+        ResponseEntity<byte[]> response = restTemplate.exchange(url, HttpMethod.GET, entity, byte[].class);
+        String decodedResponse = new String(response.getBody(), charset);
+
+        return decodedResponse;
     }
 
     public void parseData(String htmlCode) {
