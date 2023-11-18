@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/UKnow-backend.iml" filepath="$PROJECT_DIR$/.idea/UKnow-backend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/uknow.main.iml" filepath="$PROJECT_DIR$/.idea/modules/uknow.main.iml" />
     </modules>
   </component>
 </project>
