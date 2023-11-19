@@ -41,4 +41,12 @@ public class MemberController {
         return ResponseEntity.ok(userInfoList);
     }
 
+    @PostMapping("/get/lecture")
+    public ResponseEntity<List<List<String>>> getLectureInfo(@RequestBody String html) {
+        List<List<String>> returnValue = hisnetService.parseLecture(html);
+        System.out.println(returnValue.get(0).size());
+
+        return ResponseEntity.ok(returnValue);
+    }
+
 }
