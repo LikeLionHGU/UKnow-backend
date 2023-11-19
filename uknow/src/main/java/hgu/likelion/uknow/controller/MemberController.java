@@ -2,6 +2,7 @@ package hgu.likelion.uknow.controller;
 
 import hgu.likelion.uknow.dto.request.HisnetRequest;
 import hgu.likelion.uknow.service.HisnetService;
+import hgu.likelion.uknow.service.LectureService;
 import hgu.likelion.uknow.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -39,14 +40,6 @@ public class MemberController {
         List<List<List<String>>> userInfoList = hisnetService.parseData(userInfo);
 
         return ResponseEntity.ok(userInfoList);
-    }
-
-    @PostMapping("/get/lecture")
-    public ResponseEntity<List<List<String>>> getLectureInfo(@RequestBody String html) {
-        List<List<String>> returnValue = hisnetService.parseLecture(html);
-        System.out.println(returnValue.get(0).size());
-
-        return ResponseEntity.ok(returnValue);
     }
 
 }

@@ -129,30 +129,4 @@ public class HisnetService {
 
         return result;
     }
-
-    @Transactional
-    public List<List<String>> parseLecture(String html) {
-        Document document = Jsoup.parse(html);
-        List<List<String>> currentTable = new ArrayList<>();
-
-        Elements tables = document.select("table");
-
-        for(Element table : tables) {
-            Elements rows = table.select("tr");
-
-
-            for(Element row : rows) {
-                List<String> rowData = new ArrayList<>();
-                Elements cols = row.select("td");
-
-                for(Element col : cols) {
-                    rowData.add(col.text().trim());
-                }
-                currentTable.add(rowData);
-            }
-
-        }
-
-        return currentTable;
-    }
 }
