@@ -5,6 +5,7 @@ import hgu.likelion.uknow.entity.Member;
 import hgu.likelion.uknow.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,12 +14,14 @@ import java.util.List;
 public class MemberService {
     private final MemberRepository memberRepository;
 
+    @Transactional
     public boolean isSignUp(String studentId) {
         boolean isSignUp = memberRepository.existsById(studentId);
 
         return isSignUp;
     }
 
+    @Transactional
     public String addUser(List<List<List<String>>> userInfoList) {
         String name = userInfoList.get(0).get(0).get(3);
         String studentId = userInfoList.get(0).get(1).get(1);

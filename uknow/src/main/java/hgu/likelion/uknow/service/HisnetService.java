@@ -10,6 +10,7 @@ import org.springframework.http.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -28,6 +29,7 @@ public class HisnetService {
         this.restTemplate = restTemplate;
     }
 
+    @Transactional
     public String getSession(HisnetRequest hisnetRequest) {
         String loginUrl = "https://hisnet.handong.edu/login/_login.php";
         String session = null;
@@ -63,6 +65,7 @@ public class HisnetService {
         return session;
     }
 
+    @Transactional
     public String getUserInfo(String session) {
         String url = "https://hisnet.handong.edu/prof/graduate/PGRA123S_gong.php?gubun=hak";
 
@@ -101,6 +104,7 @@ public class HisnetService {
         return decodedResponse;
     }
 
+    @Transactional
     public List<List<List<String>>> parseData(String htmlCode) {
         Document document = Jsoup.parse(htmlCode);
         List<List<List<String>>> result = new ArrayList<>();
@@ -124,5 +128,31 @@ public class HisnetService {
         }
 
         return result;
+    }
+
+    @Transactional
+    public List<List<String>> parseLecture(String html) {
+        Document document = Jsoup.parse(html);
+        List<List<String>> currentTable = new ArrayList<>();
+
+        Elements tables = document.select("table");
+
+        for(Element table : tables) {
+            Elements rows = table.select("tr");
+
+
+            for(Element row : rows) {
+                List<String> rowData = new ArrayList<>();
+                Elements cols = row.select("td");
+
+                for(Element col : cols) {
+                    rowData.add(col.text().trim());
+                }
+                currentTable.add(rowData);
+            }
+
+        }
+
+        return currentTable;
     }
 }
