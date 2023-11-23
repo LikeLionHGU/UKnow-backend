@@ -32,4 +32,22 @@ public class MemberService {
 
         return null;
     }
+
+
+    @Transactional
+    public void addUserLectureList(List<List<List<String>>> userInfoList) {
+        for(int i = 0; i < userInfoList.size(); i++) { // index 0 : user information 1 : total credit
+
+            if(i >= 2) {
+                List<List<String>> temp = userInfoList.get(i);
+
+                for(int j = 0; j < temp.size(); j++) {
+
+                    if(j != 0) {
+
+                    }
+                }
+            }
+        }
+    }
 }

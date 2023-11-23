@@ -1,6 +1,8 @@
 package hgu.likelion.uknow.controller;
 
 import hgu.likelion.uknow.dto.request.HisnetRequest;
+import hgu.likelion.uknow.dto.request.MemberRequest;
+import hgu.likelion.uknow.dto.response.MemberResponse;
 import hgu.likelion.uknow.service.HisnetService;
 import hgu.likelion.uknow.service.LectureService;
 import hgu.likelion.uknow.service.MemberService;
@@ -16,8 +18,8 @@ public class MemberController {
     private final HisnetService hisnetService;
     private final MemberService memberService;
 
-    @PostMapping("/login")
-    public ResponseEntity<String> hisnetLogin(@RequestBody HisnetRequest hisnetRequest) {
+    @PostMapping("/login") // return value -> studentId and session
+    public ResponseEntity<MemberResponse> hisnetLogin(@RequestBody HisnetRequest hisnetRequest) {
         String session = hisnetService.getSession(hisnetRequest);
         String userInfo = hisnetService.getUserInfo(session);
         List<List<List<String>>> userInfoList = hisnetService.parseData(userInfo);
@@ -26,17 +28,20 @@ public class MemberController {
         boolean isSignUp = memberService.isSignUp(studentId);
 
         if(isSignUp) {
-            return ResponseEntity.ok(studentId);
+            MemberResponse memberResponse = MemberResponse.toResponse(studentId, session);
+
+            return ResponseEntity.ok(memberResponse);
         } else {
             memberService.addUser(userInfoList);
+            MemberResponse memberResponse = MemberResponse.toResponse(studentId, session);
 
-            return ResponseEntity.ok(studentId);
+            return ResponseEntity.ok(memberResponse);
         }
     }
 
-    @PostMapping("/get/{session}")
-    public ResponseEntity<List<List<List<String>>>> getStudentInfo(@PathVariable String session) {
-        String userInfo = hisnetService.getUserInfo(session);
+    @PostMapping("/get/info") // 학생에 대한 정보 가지고 오는 function
+    public ResponseEntity<List<List<List<String>>>> getStudentInfo(@RequestBody MemberRequest memberRequest) {
+        String userInfo = hisnetService.getUserInfo(memberRequest.getSession());
         List<List<List<String>>> userInfoList = hisnetService.parseData(userInfo);
 
         return ResponseEntity.ok(userInfoList);
