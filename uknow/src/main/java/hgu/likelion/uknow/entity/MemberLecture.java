@@ -20,4 +20,17 @@ public class MemberLecture {
     @ManyToOne(fetch = FetchType.LAZY)
     private Lecture lecture;
 
+    private String year;
+
+    private String semester;
+
+    public static MemberLecture toAdd(String year, String semester, Member member, Lecture lecture) {
+        return MemberLecture.builder()
+                .year(year)
+                .semester(semester)
+                .member(member)
+                .lecture(lecture)
+                .build();
+    }
+
 }

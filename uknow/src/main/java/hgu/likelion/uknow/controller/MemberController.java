@@ -43,6 +43,8 @@ public class MemberController {
     public ResponseEntity<List<List<List<String>>>> getStudentInfo(@RequestBody MemberRequest memberRequest) {
         String userInfo = hisnetService.getUserInfo(memberRequest.getSession());
         List<List<List<String>>> userInfoList = hisnetService.parseData(userInfo);
+        System.out.println(userInfoList);
+        memberService.addUserLectureList(userInfoList);
 
         return ResponseEntity.ok(userInfoList);
     }
