@@ -1,10 +1,9 @@
 package hgu.likelion.uknow.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -28,6 +27,9 @@ public class Lecture {
     String nonMajor;
 
     String type;
+
+    @OneToMany(mappedBy = "lecture", cascade = CascadeType.ALL)
+    private List<MemberLecture> memberLectureList;
 
     public static Lecture toAdd(String code, String name, Double credit, Boolean isEnglish, String nonMajor, String type) {
         return Lecture.builder()
