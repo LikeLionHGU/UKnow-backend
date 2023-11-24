@@ -1,5 +1,6 @@
-package hgu.likelion.uknow.entity;
+package hgu.likelion.uknow.lecture.domain.entity;
 
+import hgu.likelion.uknow.userlecture.UserLecture;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,7 +30,7 @@ public class Lecture {
     String type;
 
     @OneToMany(mappedBy = "lecture", cascade = CascadeType.ALL)
-    private List<MemberLecture> memberLectureList;
+    private List<UserLecture> userLectureList;
 
     public static Lecture toAdd(String code, String name, Double credit, Boolean isEnglish, String nonMajor, String type) {
         return Lecture.builder()

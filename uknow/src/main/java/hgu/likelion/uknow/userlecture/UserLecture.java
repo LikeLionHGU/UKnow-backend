@@ -1,5 +1,7 @@
-package hgu.likelion.uknow.entity;
+package hgu.likelion.uknow.userlecture;
 
+import hgu.likelion.uknow.lecture.domain.entity.Lecture;
+import hgu.likelion.uknow.user.domain.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,13 +11,13 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberLecture {
+public class UserLecture {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member member;
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Lecture lecture;
@@ -24,11 +26,11 @@ public class MemberLecture {
 
     private String semester;
 
-    public static MemberLecture toAdd(String year, String semester, Member member, Lecture lecture) {
-        return MemberLecture.builder()
+    public static UserLecture toAdd(String year, String semester, User user, Lecture lecture) {
+        return UserLecture.builder()
                 .year(year)
                 .semester(semester)
-                .member(member)
+                .user(user)
                 .lecture(lecture)
                 .build();
     }

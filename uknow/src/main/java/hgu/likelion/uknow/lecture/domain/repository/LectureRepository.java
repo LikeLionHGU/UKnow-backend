@@ -1,6 +1,6 @@
-package hgu.likelion.uknow.repository;
+package hgu.likelion.uknow.lecture.domain.repository;
 
-import hgu.likelion.uknow.entity.Lecture;
+import hgu.likelion.uknow.lecture.domain.entity.Lecture;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
