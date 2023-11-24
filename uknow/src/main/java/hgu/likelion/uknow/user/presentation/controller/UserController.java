@@ -8,6 +8,7 @@ import hgu.likelion.uknow.user.presentation.request.UserRequest;
 import hgu.likelion.uknow.user.presentation.response.UserResponse;
 import hgu.likelion.uknow.hisnet.service.HisnetService;
 import hgu.likelion.uknow.user.application.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,7 +21,7 @@ import java.util.List;
 public class UserController {
     private final HisnetService hisnetService;
     private final UserService userService;
-    private final JwtProvider tokenProvider;
+    private final JwtProvider jwtProvider;
 
     @PostMapping("/auth/register")
     public ResponseEntity<String> signUp(@RequestBody HisnetRequest hisnetRequest) {
@@ -50,9 +51,12 @@ public class UserController {
         }
     }
 
-    @PostMapping("/user/get/info") // 학생에 대한 정보 가지고 오는 function
-    public ResponseEntity<List<List<List<String>>>> getStudentInfo(@RequestBody UserRequest userRequest) {
-        String userInfo = hisnetService.getUserInfo(userRequest.getSession());
+    @PostMapping("/user/get/info") // 학생에 대한 정보 가지고 오는 function -> id와 session을 받지 않는 것으로 해야할 듯
+    public ResponseEntity<List<List<List<String>>>> getStudentInfo(HttpServletRequest request) {
+        String session = userService.getSession(jwtProvider.resolveToken(request));
+
+
+        String userInfo = hisnetService.getUserInfo(session);
         List<List<List<String>>> userInfoList = hisnetService.parseData(userInfo);
         System.out.println(userInfoList);
         userService.addUserLectureList(userInfoList);

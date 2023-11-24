@@ -11,12 +11,22 @@ import hgu.likelion.uknow.userlecture.UserLecture;
 import hgu.likelion.uknow.lecture.domain.repository.LectureRepository;
 import hgu.likelion.uknow.userlecture.UserLectureRepository;
 import hgu.likelion.uknow.user.domain.repository.UserRepository;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +35,9 @@ public class UserService {
     private final LectureRepository lectureRepository;
     private final UserLectureRepository userLectureRepository;
     private final JwtProvider jwtProvider;
+
+    @Value("${jwt.secret.key}")
+    private String secretBytes;
 
     @Transactional
     public boolean isSignUp(String studentId) {
@@ -54,7 +67,27 @@ public class UserService {
 
         User user = userRepository.findById(studentId).orElse(null);
 
-        return UserResponse.toResponse(studentId, session, name, jwtProvider.createToken(user.getStudentId(), user.getRoles()));
+        Map<String, Object> additionalClaims = new HashMap<>();
+        additionalClaims.put("session", session);
+
+        return UserResponse.toResponse(studentId, session, name, jwtProvider.createToken(user.getStudentId(), user.getRoles(), additionalClaims));
+    }
+
+    @Transactional
+    public String getSession(String token) {
+
+        Key secretKey = new SecretKeySpec(secretBytes.getBytes(StandardCharsets.UTF_8), SignatureAlgorithm.HS256.getJcaName());
+        Jws<Claims> jwsClaims = Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token);
+
+        Claims claims = jwsClaims.getBody();
+
+
+        String session = claims.get("session").toString();
+
+        return session;
     }
 
 

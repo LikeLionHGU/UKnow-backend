@@ -25,6 +25,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Component
@@ -46,9 +47,15 @@ public class JwtProvider {
     }
 
     // 토큰 생성
-    public String createToken(String account, List<Authority> roles) {
+    public String createToken(String account, List<Authority> roles, Map<String, Object> additionalClaims) {
         Claims claims = Jwts.claims().setSubject(account);
         claims.put("roles", roles);
+
+        for (Map.Entry<String, Object> entry : additionalClaims.entrySet()) {
+            claims.put(entry.getKey(), entry.getValue());
+        }
+
+
         Date now = new Date();
         return Jwts.builder()
                 .setClaims(claims)
