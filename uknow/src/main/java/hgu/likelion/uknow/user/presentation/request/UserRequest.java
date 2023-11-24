@@ -1,4 +1,4 @@
-package hgu.likelion.uknow.dto.request;
+package hgu.likelion.uknow.user.presentation.request;
 
 
 import lombok.Builder;
@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class MemberRequest {
+public class UserRequest {
     private String id;
     private String session;
 }

@@ -10,4 +10,11 @@ import lombok.Setter;
 public class HisnetRequest {
     private String id;
     private String password;
+
+    public static HisnetRequest toAdd(String id, String password) {
+        return HisnetRequest.builder()
+                .id(id)
+                .password(password)
+                .build();
+    }
 }

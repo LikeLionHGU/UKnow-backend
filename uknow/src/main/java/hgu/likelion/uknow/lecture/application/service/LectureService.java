@@ -1,7 +1,7 @@
-package hgu.likelion.uknow.service;
+package hgu.likelion.uknow.lecture.application.service;
 
-import hgu.likelion.uknow.entity.Lecture;
-import hgu.likelion.uknow.repository.LectureRepository;
+import hgu.likelion.uknow.lecture.domain.entity.Lecture;
+import hgu.likelion.uknow.lecture.domain.repository.LectureRepository;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

@@ -1,4 +1,4 @@
-package hgu.likelion.uknow.service;
+package hgu.likelion.uknow.hisnet.service;
 
 import hgu.likelion.uknow.dto.request.HisnetRequest;
 import org.jsoup.Jsoup;
