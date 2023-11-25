@@ -184,7 +184,7 @@ public class UserLectureService {
 
         userLectureTotalResponse = UserLectureTotalResponse.builder()
                 .userLectureResponseList(userLectureResponseList)
-                .lectureType(LectureType.english)
+                .lectureType(LectureType.professionalCulture)
                 .totalCredit(5.0)
                 .credit(credit)
                 .isPassed(isPassed)
@@ -270,7 +270,7 @@ public class UserLectureService {
 
         userLectureTotalResponse = UserLectureTotalResponse.builder()
                 .userLectureResponseList(userLectureResponseList)
-                .lectureType(LectureType.english)
+                .lectureType(LectureType.ICT)
                 .totalCredit(2.0)
                 .credit(credit)
                 .isPassed(isPassed)
@@ -294,7 +294,7 @@ public class UserLectureService {
 
         userLectureTotalResponse = UserLectureTotalResponse.builder()
                 .userLectureResponseList(userLectureResponseList)
-                .lectureType(LectureType.english)
+                .lectureType(LectureType.culture)
                 .totalCredit(9.0)
                 .credit(credit)
                 .isPassed(isPassed)
