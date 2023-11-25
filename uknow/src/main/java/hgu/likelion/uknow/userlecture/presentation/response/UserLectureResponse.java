@@ -16,7 +16,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserLectureResponse {
+public class UserLectureResponse { // 전체 리스트를 그냥 return 해줌
 
     Long id;
 

@@ -1,5 +1,6 @@
 package hgu.likelion.uknow.userlecture.domain.repository;
 
+import hgu.likelion.uknow.common.LectureType;
 import hgu.likelion.uknow.lecture.domain.entity.Lecture;
 import hgu.likelion.uknow.userlecture.domain.entity.UserLecture;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +13,7 @@ public interface UserLectureRepository extends JpaRepository<UserLecture, Long> 
 
     @Query("select r from UserLecture r where r.user.studentId = :studentId")
     List<UserLecture> findByStudentId(@Param("studentId") String studentId);
+
+    @Query("select r from UserLecture r where r.user.studentId = :studentId and r.lectureType = :type")
+    List<UserLecture> findByStudentIdAAndLectureType(@Param("studentId") String studentId, @Param("type")LectureType type);
 }
