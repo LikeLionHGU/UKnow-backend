@@ -15,6 +15,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -47,14 +48,11 @@ public class JwtProvider {
     }
 
     // 토큰 생성
-    public String createToken(String account, List<Authority> roles, Map<String, Object> additionalClaims) {
+    public String createToken(String account, List<Authority> roles, String session) {
         Claims claims = Jwts.claims().setSubject(account);
         claims.put("roles", roles);
 
-        for (Map.Entry<String, Object> entry : additionalClaims.entrySet()) {
-            claims.put(entry.getKey(), entry.getValue());
-        }
-
+        claims.put("session", session);
 
         Date now = new Date();
         return Jwts.builder()
@@ -75,6 +73,14 @@ public class JwtProvider {
     // 토큰에 담겨있는 유저 account 획득
     public String getAccount(String token) {
         return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public String getSession(String token) {
+        if (token != null && validateToken(token)) {
+            // check access token
+            token = token.split(" ")[1].trim();
+        }
+        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().get("session", String.class);
     }
 
     // Authorization Header를 통해 인증을 한다.
