@@ -1,5 +1,6 @@
 package hgu.likelion.uknow.user.presentation.response;
 
+import hgu.likelion.uknow.user.domain.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,6 +23,13 @@ public class UserResponse {
                 .name(name)
                 .token(token)
                 .session(session)
+                .build();
+    }
+
+    public static UserResponse toResponse(User user) {
+        return UserResponse.builder()
+                .id(user.getStudentId())
+                .name(user.getName())
                 .build();
     }
 
