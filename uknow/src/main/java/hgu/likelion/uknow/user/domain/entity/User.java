@@ -2,7 +2,7 @@ package hgu.likelion.uknow.user.domain.entity;
 
 import hgu.likelion.uknow.common.Authority;
 import hgu.likelion.uknow.common.BaseEntity;
-import hgu.likelion.uknow.userlecture.UserLecture;
+import hgu.likelion.uknow.userlecture.domain.entity.UserLecture;
 import jakarta.persistence.*;
 import lombok.*;
 

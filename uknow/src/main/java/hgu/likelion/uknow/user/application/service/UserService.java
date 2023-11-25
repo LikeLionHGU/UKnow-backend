@@ -2,28 +2,20 @@ package hgu.likelion.uknow.user.application.service;
 
 
 import hgu.likelion.uknow.common.Authority;
-import hgu.likelion.uknow.dto.request.HisnetRequest;
+import hgu.likelion.uknow.common.LectureType;
 import hgu.likelion.uknow.jwt.JwtProvider;
 import hgu.likelion.uknow.lecture.domain.entity.Lecture;
 import hgu.likelion.uknow.user.domain.entity.User;
 import hgu.likelion.uknow.user.presentation.response.UserResponse;
-import hgu.likelion.uknow.userlecture.UserLecture;
+import hgu.likelion.uknow.userlecture.domain.entity.UserLecture;
 import hgu.likelion.uknow.lecture.domain.repository.LectureRepository;
-import hgu.likelion.uknow.userlecture.UserLectureRepository;
+import hgu.likelion.uknow.userlecture.domain.repository.UserLectureRepository;
 import hgu.likelion.uknow.user.domain.repository.UserRepository;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.util.*;
 
 @Service
@@ -83,49 +75,68 @@ public class UserService {
         boolean christianWorldView = false;
         User user = userRepository.findById(studentId).orElse(null);
 
-        for(int i = 0; i < userInfoList.size(); i++) { // index 0 : user information 1 : total credit
+        for (int i = 0; i < userInfoList.size(); i++) { // index 0 : user information 1 : total credit
 
-            if(i >= 2) {
+            if (i >= 2) {
                 List<List<String>> temp = userInfoList.get(i);
 
-                for(int j = 0; j < temp.size(); j++) {
+                for (int j = 0; j < temp.size(); j++) {
 
-                    if(j != 0 && j != temp.size() - 1) {
+                    if (j != 0 && j != temp.size() - 1) {
                         List<String> lectureString = temp.get(j);
 
                         String year = lectureString.get(1);
                         String semester = lectureString.get(2);
                         String code = lectureString.get(3);
+                        LectureType lectureType;
+
+                        if(i == 2) {
+                            lectureType = LectureType.faith;
+                        } else if(i == 3) {
+                            lectureType = LectureType.leaderShip;
+                        } else if(i == 4) {
+                            lectureType = LectureType.english;
+                        } else if(i == 5) {
+                            lectureType = LectureType.professionalCulture;
+                        } else if(i == 6) {
+                            lectureType = LectureType.BSM;
+                        } else if(i == 7) {
+                            lectureType = LectureType.ICT;
+                        } else if(i == 8) {
+                            lectureType = LectureType.culture;
+                        } else {
+                            lectureType = LectureType.major;
+                        }
 
                         List<Lecture> lecture = lectureRepository.findByCode(code); // code가 같지만 영어가 true / false로 나뉠 수 있음
 
-                        if(lecture.size() == 0) { // 해당 lecture가 없을 경우에 추가 해줘야 함
+                        if (lecture.size() == 0) { // 해당 lecture가 없을 경우에 추가 해줘야 함
                             Double credit = Double.valueOf(lectureString.get(5));
                             String name = lectureString.get(4);
                             String type = lectureString.get(0);
 
                             Lecture newLecture = Lecture.toAdd(code, name, credit, null, null, type);
                             lectureRepository.save(newLecture);
-                            if(newLecture.getName().equals("기독교 세계관 (Towards a Christian Worldview)")) {
-                                if(christianWorldView == false) {
-                                    UserLecture userLecture = UserLecture.toAdd(year, semester, user, newLecture);
+                            if (newLecture.getName().equals("기독교 세계관 (Towards a Christian Worldview)")) {
+                                if (christianWorldView == false) {
+                                    UserLecture userLecture = UserLecture.toAdd(year, semester, user, newLecture, lectureType);
                                     userLectureRepository.save(userLecture);
                                     christianWorldView = true;
                                 }
                             } else {
-                                UserLecture userLecture = UserLecture.toAdd(year, semester, user, newLecture);
+                                UserLecture userLecture = UserLecture.toAdd(year, semester, user, newLecture, lectureType);
                                 userLectureRepository.save(userLecture);
                             }
                         } else {
 
-                            if(lecture.get(0).getName().equals("기독교 세계관 (Towards a Christian Worldview)")) {
-                                if(christianWorldView == false) {
-                                    UserLecture userLecture = UserLecture.toAdd(year, semester, user, lecture.get(0));
+                            if (lecture.get(0).getName().equals("기독교 세계관 (Towards a Christian Worldview)")) {
+                                if (christianWorldView == false) {
+                                    UserLecture userLecture = UserLecture.toAdd(year, semester, user, lecture.get(0), lectureType);
                                     userLectureRepository.save(userLecture);
                                     christianWorldView = true;
                                 }
                             } else {
-                                UserLecture userLecture = UserLecture.toAdd(year, semester, user, lecture.get(0));
+                                UserLecture userLecture = UserLecture.toAdd(year, semester, user, lecture.get(0), lectureType);
                                 userLectureRepository.save(userLecture);
                             }
                         }
