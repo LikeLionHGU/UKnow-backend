@@ -19,7 +19,6 @@ public class LectureController {
 
     @PostMapping("/user/get/lecture") // html 파싱 후 Data base에 전체 강의 목록 집어넣는 function
     public ResponseEntity<List<List<String>>> getLectureInfo(@RequestBody String html) {
-
         List<List<String>> returnValue = lectureService.parseLecture(html);
         lectureService.addLecture(returnValue);
 

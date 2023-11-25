@@ -53,6 +53,7 @@ public class UserController {
 
     @PostMapping("/user/get/info") // 학생에 대한 정보 가지고 오는 function -> id와 session을 받지 않는 것으로 해야할 듯
     public ResponseEntity<List<List<List<String>>>> getStudentInfo(HttpServletRequest request) {
+        System.out.println("!!");
         String session = userService.getSession(jwtProvider.resolveToken(request));
 
 
