@@ -72,6 +72,10 @@ public class JwtProvider {
 
     // 토큰에 담겨있는 유저 account 획득
     public String getAccount(String token) {
+        if (token != null && validateToken(token)) {
+            // check access token
+            token = token.split(" ")[1].trim();
+        }
         return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().getSubject();
     }
 
