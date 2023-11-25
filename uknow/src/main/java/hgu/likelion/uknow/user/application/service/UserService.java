@@ -90,19 +90,19 @@ public class UserService {
                         String code = lectureString.get(3);
                         LectureType lectureType;
 
-                        if(i == 2) {
+                        if (i == 2) {
                             lectureType = LectureType.faith;
-                        } else if(i == 3) {
+                        } else if (i == 3) {
                             lectureType = LectureType.leaderShip;
-                        } else if(i == 4) {
+                        } else if (i == 4) {
                             lectureType = LectureType.english;
-                        } else if(i == 5) {
+                        } else if (i == 5) {
                             lectureType = LectureType.professionalCulture;
-                        } else if(i == 6) {
+                        } else if (i == 6) {
                             lectureType = LectureType.BSM;
-                        } else if(i == 7) {
+                        } else if (i == 7) {
                             lectureType = LectureType.ICT;
-                        } else if(i == 8) {
+                        } else if (i == 8) {
                             lectureType = LectureType.culture;
                         } else {
                             lectureType = LectureType.major;
@@ -117,28 +117,16 @@ public class UserService {
 
                             Lecture newLecture = Lecture.toAdd(code, name, credit, null, null, type);
                             lectureRepository.save(newLecture);
-                            if (newLecture.getName().equals("기독교 세계관 (Towards a Christian Worldview)")) {
-                                if (christianWorldView == false) {
-                                    UserLecture userLecture = UserLecture.toAdd(year, semester, user, newLecture, lectureType);
-                                    userLectureRepository.save(userLecture);
-                                    christianWorldView = true;
-                                }
-                            } else {
-                                UserLecture userLecture = UserLecture.toAdd(year, semester, user, newLecture, lectureType);
-                                userLectureRepository.save(userLecture);
-                            }
+
+                            UserLecture userLecture = UserLecture.toAdd(year, semester, user, newLecture, lectureType);
+                            userLectureRepository.save(userLecture);
+
                         } else {
 
-                            if (lecture.get(0).getName().equals("기독교 세계관 (Towards a Christian Worldview)")) {
-                                if (christianWorldView == false) {
-                                    UserLecture userLecture = UserLecture.toAdd(year, semester, user, lecture.get(0), lectureType);
-                                    userLectureRepository.save(userLecture);
-                                    christianWorldView = true;
-                                }
-                            } else {
-                                UserLecture userLecture = UserLecture.toAdd(year, semester, user, lecture.get(0), lectureType);
-                                userLectureRepository.save(userLecture);
-                            }
+
+                            UserLecture userLecture = UserLecture.toAdd(year, semester, user, lecture.get(0), lectureType);
+                            userLectureRepository.save(userLecture);
+
                         }
 
                     }
