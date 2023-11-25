@@ -1,6 +1,6 @@
 package hgu.likelion.uknow.lecture.domain.entity;
 
-import hgu.likelion.uknow.userlecture.UserLecture;
+import hgu.likelion.uknow.userlecture.domain.entity.UserLecture;
 import jakarta.persistence.*;
 import lombok.*;
 

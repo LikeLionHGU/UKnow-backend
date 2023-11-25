@@ -1,5 +1,6 @@
-package hgu.likelion.uknow.userlecture;
+package hgu.likelion.uknow.userlecture.domain.entity;
 
+import hgu.likelion.uknow.common.LectureType;
 import hgu.likelion.uknow.lecture.domain.entity.Lecture;
 import hgu.likelion.uknow.user.domain.entity.User;
 import jakarta.persistence.*;
@@ -26,12 +27,15 @@ public class UserLecture {
 
     private String semester;
 
-    public static UserLecture toAdd(String year, String semester, User user, Lecture lecture) {
+    private LectureType lectureType;
+
+    public static UserLecture toAdd(String year, String semester, User user, Lecture lecture, LectureType lectureType) {
         return UserLecture.builder()
                 .year(year)
                 .semester(semester)
                 .user(user)
                 .lecture(lecture)
+                .lectureType(lectureType)
                 .build();
     }
 

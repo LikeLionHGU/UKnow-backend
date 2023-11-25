@@ -1,6 +1,6 @@
-package hgu.likelion.uknow.userlecture;
+package hgu.likelion.uknow.userlecture.domain.repository;
 
-import hgu.likelion.uknow.userlecture.UserLecture;
+import hgu.likelion.uknow.userlecture.domain.entity.UserLecture;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserLectureRepository extends JpaRepository<UserLecture, Long> {
