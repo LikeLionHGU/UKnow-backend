@@ -26,9 +26,6 @@ public class UserService {
     private final UserLectureRepository userLectureRepository;
     private final JwtProvider jwtProvider;
 
-    @Value("${jwt.secret.key}")
-    private String secretString;
-
     @Transactional
     public boolean isSignUp(String studentId) {
         boolean isSignUp = userRepository.existsById(studentId);
@@ -90,7 +87,7 @@ public class UserService {
                         String code = lectureString.get(3);
                         LectureType lectureType;
 
-                        if (i == 2) {
+                        if (i == 2) { // 히즈넷 html 테이블을 기준으로 나누기 때문에 8개의 테이블이 default로 사용됨
                             lectureType = LectureType.faith;
                         } else if (i == 3) {
                             lectureType = LectureType.leaderShip;
