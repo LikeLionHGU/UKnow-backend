@@ -13,4 +13,8 @@ public interface LectureRepository extends JpaRepository<Lecture, String> {
 
     @Query("select r from Lecture r where r.code = :code")
     List<Lecture> findByCode(@Param("code") String code);
+
+    List<Lecture> findLecturesByNameContains(String name);
+
+    List<Lecture> findLecturesByNonMajorEquals(String name);
 }
