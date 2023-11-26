@@ -1,13 +1,14 @@
 package hgu.likelion.uknow.lecture.presentation.controller;
 
+import hgu.likelion.uknow.common.LectureType;
+import hgu.likelion.uknow.jwt.JwtProvider;
 import hgu.likelion.uknow.lecture.application.service.LectureService;
+import hgu.likelion.uknow.lecture.presentation.response.LectureResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LectureController {
     private final LectureService lectureService;
+    private final JwtProvider jwtProvider;
 
 
     @PostMapping("/user/get/lecture") // html 파싱 후 Data base에 전체 강의 목록 집어넣는 function
@@ -25,11 +27,20 @@ public class LectureController {
         return ResponseEntity.ok(returnValue);
     }
 
-    @PostMapping("/test")
-    public ResponseEntity<Void> test(HttpServletRequest request) {
-        System.out.println(request.getSession().getId());
-        System.out.println(":::" + SecurityContextHolder.getContext().getAuthentication().getName());
-        return ResponseEntity.ok(null);
+    @GetMapping("/user/get/lecture/{name}") // 검색 기능 구현
+    public ResponseEntity<List<LectureResponse>> getOneLecture(@PathVariable("name") String name) {
+        List<LectureResponse> lectureResponseList = lectureService.getLectureByName(name);
+
+        return ResponseEntity.ok(lectureResponseList);
+    }
+
+    @GetMapping("/user/take/{enum}")
+    public ResponseEntity<List<LectureResponse>> haveToTake(@PathVariable("enum") LectureType lectureType, HttpServletRequest request) {
+        String token = jwtProvider.resolveToken(request);
+        String studentId = jwtProvider.getAccount(token);
+
+        List<LectureResponse> lectureResponseList = lectureService.haveToTake(lectureType, studentId);
+        return ResponseEntity.ok(lectureResponseList);
     }
 
 
