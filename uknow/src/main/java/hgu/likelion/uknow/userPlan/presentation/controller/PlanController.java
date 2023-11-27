@@ -1,9 +1,12 @@
-package hgu.likelion.uknow.lectureLike.presentation.controller;
+package hgu.likelion.uknow.userPlan.presentation.controller;
 
 import hgu.likelion.uknow.hisnet.service.HisnetService;
 import hgu.likelion.uknow.jwt.JwtProvider;
 import hgu.likelion.uknow.lectureLike.application.service.LectureLikeService;
 import hgu.likelion.uknow.user.application.service.UserService;
+import hgu.likelion.uknow.userPlan.application.dto.PlanTableDto;
+import hgu.likelion.uknow.userPlan.application.service.PlanService;
+import hgu.likelion.uknow.userPlan.presentation.request.PlanTableRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,15 +17,16 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user")
-public class LectureLikeController {
+public class PlanController {
 
+    private final JwtProvider jwtProvider;
     private final LectureLikeService subjectFavoritesService;
     private final HisnetService hisnetService;
     private final UserService userService;
-    private final JwtProvider jwtProvider;
+    private final PlanService planService;
 
-    @GetMapping("subjectFavorites/{lecture_id}")
-    public ResponseEntity<Boolean> like(@PathVariable Long lecture_id, HttpServletRequest request) {
+    @PostMapping("/addPlanTable")
+    public ResponseEntity<Long> addPlanTable(@RequestBody PlanTableRequest planTablerequest, HttpServletRequest request) {
 
         String session = userService.getSession(jwtProvider.resolveToken(request));
 
@@ -32,9 +36,8 @@ public class LectureLikeController {
         String studentId = userInfoList.get(0).get(1).get(1);
 
         System.out.println(studentId);
-
-        Boolean result = subjectFavoritesService.saveLike(lecture_id, studentId);
-        System.out.println(result);
-        return ResponseEntity.ok(result);
+        
+        Long savedId = planService.addPlanTable(PlanTableDto.toAddScrapFolder(planTablerequest), studentId);
+        return ResponseEntity.ok(savedId);
     }
 }
