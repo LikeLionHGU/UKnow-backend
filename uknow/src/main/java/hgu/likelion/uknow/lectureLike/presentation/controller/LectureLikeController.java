@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/user")
 public class LectureLikeController {
 
     private final LectureLikeService subjectFavoritesService;
@@ -20,7 +21,7 @@ public class LectureLikeController {
     private final UserService userService;
     private final JwtProvider jwtProvider;
 
-    @GetMapping("user/subjectFavorites/{lecture_id}")
+    @GetMapping("subjectFavorites/{lecture_id}")
     public ResponseEntity<Boolean> like(@PathVariable Long lecture_id, HttpServletRequest request) {
 
         String session = userService.getSession(jwtProvider.resolveToken(request));
@@ -28,11 +29,11 @@ public class LectureLikeController {
 
         String userInfo = hisnetService.getUserInfo(session);
         List<List<List<String>>> userInfoList = hisnetService.parseData(userInfo);
-        String s = userInfoList.get(0).get(1).get(1);
+        String studentId = userInfoList.get(0).get(1).get(1);
 
-        System.out.println(s);
+        System.out.println(studentId);
 
-        Boolean result = subjectFavoritesService.saveLike(lecture_id, s);
+        Boolean result = subjectFavoritesService.saveLike(lecture_id, studentId);
         System.out.println(result);
         return ResponseEntity.ok(result);
     }
