@@ -105,7 +105,7 @@ public class UserService {
                             lectureType = LectureType.major;
                         }
 
-                        List<Lecture> lecture = lectureRepository.findByCode(code); // code가 같지만 영어가 true / false로 나뉠 수 있음
+                        List<Lecture> lecture = lectureRepository.findLecturesByCode(code); // code가 같지만 영어가 true / false로 나뉠 수 있음
 
                         if (lecture.size() == 0) { // 해당 lecture가 없을 경우에 추가 해줘야 함
                             Double credit = Double.valueOf(lectureString.get(5));
