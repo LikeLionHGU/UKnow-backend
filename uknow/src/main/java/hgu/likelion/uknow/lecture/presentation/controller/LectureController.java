@@ -31,6 +31,8 @@ public class LectureController {
     public ResponseEntity<List<LectureResponse>> getOneLecture(@PathVariable("name") String name) {
         List<LectureResponse> lectureResponseList = lectureService.getLectureByName(name);
 
+
+
         return ResponseEntity.ok(lectureResponseList);
     }
 
