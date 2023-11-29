@@ -53,4 +53,21 @@ public class LectureLikeService {
 
     }
 
+    public boolean isLectureLike(Long lecture_id, String studentId) {
+
+        User user = userRepository.findById(studentId).orElseThrow(() -> new IllegalArgumentException("no such room"));
+        Lecture lecture = lectureRepository.findById(Long.toString(lecture_id)).orElseThrow(() -> new IllegalArgumentException("no such room"));
+
+        List<LectureLike> findLectureLike = lectureLikeRepository.findByUserIdAndLectureId(user , lecture);
+
+
+        if (findLectureLike.isEmpty()){
+            //유저가 좋아요를 누를 과목이 아니면 false
+            return false;
+        }else {
+            //유저가 좋아요를 누른 과목이면 true
+            return true;
+        }
+    }
+
 }
