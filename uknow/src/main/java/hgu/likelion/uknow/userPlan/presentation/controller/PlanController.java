@@ -7,6 +7,7 @@ import hgu.likelion.uknow.user.application.service.UserService;
 import hgu.likelion.uknow.userPlan.application.dto.PlanTableDto;
 import hgu.likelion.uknow.userPlan.application.service.PlanService;
 import hgu.likelion.uknow.userPlan.presentation.request.PlanTableRequest;
+import hgu.likelion.uknow.userPlan.presentation.response.NeedCreditInfoResponse;
 import hgu.likelion.uknow.userPlan.presentation.response.PlanInfoResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -69,8 +70,8 @@ public class PlanController {
         return ResponseEntity.ok(s);
     }
 
-    @GetMapping("/PlanCreditInfo/")
-    public ResponseEntity<Boolean> planCreditInfo(HttpServletRequest request) {
+    @GetMapping("/needCreditInfo")
+    public ResponseEntity<List<NeedCreditInfoResponse>> planCreditInfo(HttpServletRequest request) {
 
         String session = userService.getSession(jwtProvider.resolveToken(request));
 
@@ -79,14 +80,10 @@ public class PlanController {
         List<List<List<String>>> userInfoList = hisnetService.parseData(userInfo);
         String studentId = userInfoList.get(0).get(1).get(1);
 
-        // 아이디에 맞는 모든 테이블을 불러옴.
-        //각 테이블에 있는 모든 과목 정보를 불러옴.
-        //유저랙처 리스폰에 유저렉쳐와, 계획렉쳐를 다 넣음.
-        //다 넣은 유저랙쳐들로 토탈을 계산함.
-        //필요한정보만
+        List<NeedCreditInfoResponse> n = planService.needCreditInfo(studentId);
 
 
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(n);
     }
 
 
