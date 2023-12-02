@@ -1,5 +1,6 @@
 package hgu.likelion.uknow.lectureLike.presentation.controller;
 
+import hgu.likelion.uknow.common.LectureType;
 import hgu.likelion.uknow.hisnet.service.HisnetService;
 import hgu.likelion.uknow.jwt.JwtProvider;
 import hgu.likelion.uknow.lectureLike.application.service.LectureLikeService;
@@ -22,8 +23,8 @@ public class LectureLikeController {
     private final UserService userService;
     private final JwtProvider jwtProvider;
 
-    @GetMapping("subjectFavorites/{lecture_id}")
-    public ResponseEntity<Boolean> like(@PathVariable Long lecture_id, HttpServletRequest request) {
+    @GetMapping("subjectFavorites/{lecture_id}/{enum}")
+    public ResponseEntity<Boolean> like(@PathVariable Long lecture_id, @PathVariable("enum") LectureType lectureType, HttpServletRequest request) {
 
         String session = userService.getSession(jwtProvider.resolveToken(request));
 
@@ -34,7 +35,7 @@ public class LectureLikeController {
 
         System.out.println(studentId);
 
-        Boolean result = subjectFavoritesService.saveLike(lecture_id, studentId);
+        Boolean result = subjectFavoritesService.saveLike(lecture_id, studentId, lectureType);
         System.out.println(result);
         return ResponseEntity.ok(result);
     }

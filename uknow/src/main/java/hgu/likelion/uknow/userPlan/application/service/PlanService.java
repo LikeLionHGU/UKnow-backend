@@ -51,14 +51,13 @@ public class PlanService {
     }
 
     @Transactional
-    public Boolean addPlanLecture(Long planTable_id, Long lecture_id) {
+    public Boolean addPlanLecture(Long planTable_id, Long lecture_id, LectureType lectureType) {
         System.out.println("===>1");
         PlanTable planTable = planTableRepository.findById(planTable_id).orElseThrow(() -> new IllegalArgumentException("no such scrapFolder"));
         System.out.println("===>2");
         Lecture lecture = lectureRepository.findById(Long.toString(lecture_id)).orElseThrow(() -> new IllegalArgumentException("no such question"));
 
-
-        String code = lecture.getCode();
+        LectureType bigLectureType = null;
 
         List<PlanLecture> findPlanLecture = planLectureRepository.findByPlanTableIdAndLectureId(planTable.getId(), lecture.getId());
         System.out.println(planTable.getTableName() + " + " + lecture.getName());
@@ -66,10 +65,67 @@ public class PlanService {
 
         if (findPlanLecture.isEmpty()) {
             // 중복이 아니라면
-            PlanLecture setPlanLecture = PlanLecture.toPlanLecture(planTable, lecture);
-            planLectureRepository.save(setPlanLecture);
 
-            // 위에 정보 업데이트를 통해서 각 분류에서 몇학점 남았는지 다시 계산해서 리스폰스로 리턴 해야함.
+            /*
+
+             faith, chapel, firstFaith, secondFaith, firstWorld, secondWorld,
+            -> faith,
+
+            leaderShip, team, service, edu
+            ->leaderShip,
+
+            english,
+            -> english
+
+            professionalCulture
+            -> professionalCulture
+
+            BSM, , BSMSet
+            ->BSM
+
+            ICT
+            ->ICT,
+
+            culture
+            -> culture
+
+             major, majorEssential, majorChoice, design
+             ->major
+
+            */
+
+            //타입계산
+
+            if(lectureType == LectureType.faith ||  lectureType == LectureType.chapel || lectureType == LectureType.firstFaith || lectureType == LectureType.secondFaith || lectureType == LectureType.firstWorld || lectureType == LectureType.secondWorld){
+                bigLectureType = LectureType.faith;
+            }
+            if(lectureType == LectureType.leaderShip ||  lectureType == LectureType.team || lectureType == LectureType.service || lectureType == LectureType.edu){
+                bigLectureType = LectureType.leaderShip;
+            }
+            if(lectureType == LectureType.english){
+                bigLectureType = LectureType.english;
+            }
+            if(lectureType == LectureType.professionalCulture){
+                bigLectureType = LectureType.professionalCulture;
+            }
+            if(lectureType == LectureType.BSM || lectureType == LectureType.BSMSet){
+                bigLectureType = LectureType.BSM;
+            }
+            if(lectureType == LectureType.ICT){
+                bigLectureType = LectureType.ICT;
+            }
+            if(lectureType == LectureType.culture){
+                bigLectureType = LectureType.culture;
+            }
+            if(lectureType == LectureType.major ||  lectureType == LectureType.majorEssential || lectureType == LectureType.majorChoice || lectureType == LectureType.design){
+                bigLectureType = LectureType.major;
+            }
+
+
+
+
+            PlanLecture setPlanLecture = PlanLecture.toPlanLecture(planTable, lecture, bigLectureType);
+            planLectureRepository.save(setPlanLecture);
 
             return true;
         } else {
@@ -145,10 +201,16 @@ public class PlanService {
 
     @Transactional
     public List<UserLectureTotalResponse> checkStudentLecture(String studentId, List<PlanLectureResponse> planLectureResponselist) {
+        //List<PlanLectureResponse> planLecturelist = new ArrayList<>();
         List<UserLectureTotalResponse> userLectureTotalResponseList = new ArrayList<>();
 
         // 신앙 부분에 대해서 현재 졸업 심사 결과가 합격 되었는지 여부를 확인할 수 있음
         List<UserLectureResponse> userLectureResponseList = getLectureListByStudentIdAndType(studentId, LectureType.faith);
+        for(PlanLectureResponse p : planLectureResponselist){
+            if(p.getLectureType() == LectureType.faith){
+                userLectureResponseList.add(UserLectureResponse.toPlanLectureResponse(p));
+            }
+        }
 
         List<UserLectureResponse> chapelList = new ArrayList<>();
         List<UserLectureResponse> firstFaithList = new ArrayList<>();
@@ -270,6 +332,11 @@ public class PlanService {
         // 인성 및 리더십 부분에 대해서 현재 졸업 심사 결과가 합격 되었는지 여부를 확인할 수 있음
 
         userLectureResponseList = getLectureListByStudentIdAndType(studentId, LectureType.leaderShip);
+        for(PlanLectureResponse p : planLectureResponselist){
+            if(p.getLectureType() == LectureType.leaderShip){
+                userLectureResponseList.add(UserLectureResponse.toPlanLectureResponse(p));
+            }
+        }
 
         credit = 0;
         double leader = 0; // 공동체 리더십 훈련
@@ -359,6 +426,11 @@ public class PlanService {
         // 실무 영어 부분에 대해서 현재 졸업 심사 결과가 합격 되었는지 여부를 확인할 수 있음
 
         userLectureResponseList = getLectureListByStudentIdAndType(studentId, LectureType.english);
+        for(PlanLectureResponse p : planLectureResponselist){
+            if(p.getLectureType() == LectureType.english){
+                userLectureResponseList.add(UserLectureResponse.toPlanLectureResponse(p));
+            }
+        }
 
         credit = 0;
         Boolean EAP = false;
@@ -397,6 +469,11 @@ public class PlanService {
         // 전문 교양 부분에 대해서 현재 졸업 심사 결과가 합격 되었는지 여부를 확인할 수 있음
 
         userLectureResponseList = getLectureListByStudentIdAndType(studentId, LectureType.professionalCulture);
+        for(PlanLectureResponse p : planLectureResponselist){
+            if(p.getLectureType() == LectureType.professionalCulture){
+                userLectureResponseList.add(UserLectureResponse.toPlanLectureResponse(p));
+            }
+        }
 
         credit = 0;
         isPassed = false;
@@ -421,6 +498,12 @@ public class PlanService {
         // BSM 부분에 대해서 현재 졸업 심사 결과가 합격 되었는지 여부를 확인할 수 있음
 
         userLectureResponseList = getLectureListByStudentIdAndType(studentId, LectureType.BSM);
+        for(PlanLectureResponse p : planLectureResponselist){
+            if(p.getLectureType() == LectureType.BSM){
+                userLectureResponseList.add(UserLectureResponse.toPlanLectureResponse(p));
+            }
+        }
+
 
         credit = 0;
         isPassed = false;
@@ -513,6 +596,11 @@ public class PlanService {
         // ICT 부분에 대해서 현재 졸업 심사 결과가 합격 되었는지 여부를 확인할 수 있음
 
         userLectureResponseList = getLectureListByStudentIdAndType(studentId, LectureType.ICT);
+        for(PlanLectureResponse p : planLectureResponselist){
+            if(p.getLectureType() == LectureType.ICT){
+                userLectureResponseList.add(UserLectureResponse.toPlanLectureResponse(p));
+            }
+        }
 
         credit = 0;
         isPassed = false;
@@ -537,6 +625,11 @@ public class PlanService {
         // 교양 선택 부분에 대해서 현재 졸업 심사 결과가 합격 되었는지 여부를 확인할 수 있음
 
         userLectureResponseList = getLectureListByStudentIdAndType(studentId, LectureType.culture);
+        for(PlanLectureResponse p : planLectureResponselist){
+            if(p.getLectureType() == LectureType.culture){
+                userLectureResponseList.add(UserLectureResponse.toPlanLectureResponse(p));
+            }
+        }
 
         credit = 0;
         isPassed = false;
@@ -564,6 +657,11 @@ public class PlanService {
         // 공설입 3 실프 1 웹서개 1 디자인시스템설계 1 모앱개 1 AI프로젝트입문 1 객체지향설계패턴 1 임베디드 1 IOT 1 캡스톤디자인1 2 캡스톤디자인2 4
 
         userLectureResponseList = getLectureListByStudentIdAndType(studentId, LectureType.major);
+        for(PlanLectureResponse p : planLectureResponselist){
+            if(p.getLectureType() == LectureType.major){
+                userLectureResponseList.add(UserLectureResponse.toPlanLectureResponse(p));
+            }
+        }
 
         credit = 0;
         isPassed = false;

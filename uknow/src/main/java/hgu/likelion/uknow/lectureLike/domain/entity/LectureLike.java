@@ -1,6 +1,7 @@
 package hgu.likelion.uknow.lectureLike.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import hgu.likelion.uknow.common.LectureType;
 import hgu.likelion.uknow.lecture.domain.entity.Lecture;
 import hgu.likelion.uknow.user.domain.entity.User;
 import jakarta.persistence.*;
@@ -28,15 +29,18 @@ public class LectureLike {
     @ManyToOne(fetch = FetchType.LAZY)
     private Lecture lectureId;
 
+    LectureType lectureType;
+
     private boolean deleted = Boolean.FALSE;
 
-    public static LectureLike toLectureLike(User userId, Lecture lectureId) {
+    public static LectureLike toLectureLike(User userId, Lecture lectureId, LectureType lectureType) {
 
 
 
         return LectureLike.builder()
                 .userId(userId)
                 .lectureId(lectureId)
+                .lectureType(lectureType)
                 .build();
 
 
