@@ -1,6 +1,7 @@
 package hgu.likelion.uknow.lectureLike.application.service;
 
 
+import hgu.likelion.uknow.common.LectureType;
 import hgu.likelion.uknow.lecture.domain.entity.Lecture;
 import hgu.likelion.uknow.lecture.domain.repository.LectureRepository;
 import hgu.likelion.uknow.lectureLike.domain.entity.LectureLike;
@@ -21,7 +22,7 @@ public class LectureLikeService {
     private final LectureRepository lectureRepository;
     private final LectureLikeRepository lectureLikeRepository;
 
-    public Boolean saveLike(Long lecture_id, String studentId) {
+    public Boolean saveLike(Long lecture_id, String studentId, LectureType lectureType) {
 
 
 
@@ -36,7 +37,7 @@ public class LectureLikeService {
         //System.out.println(findAnswerLike.isEmpty());
         if (findLectureLike.isEmpty()){
 
-            LectureLike lectureLike = LectureLike.toLectureLike(user, lecture);
+            LectureLike lectureLike = LectureLike.toLectureLike(user, lecture,lectureType);
             lectureLikeRepository.save(lectureLike);
             //br.plusLike(boardId);
             return true;

@@ -25,14 +25,14 @@ public class PlanLecture {
 
     private LectureType lectureType;
 
-    public static PlanLecture toPlanLecture(PlanTable planTable, Lecture lecture) {
+    public static PlanLecture toPlanLecture(PlanTable planTable, Lecture lecture, LectureType lectureType) {
 
 
 
         return PlanLecture.builder()
                 .planTable(planTable)
                 .lecture(lecture)
-                .lectureType(null)  //어떻게 넣어야 되는지 모르겠넹
+                .lectureType(lectureType)  //어떻게 넣어야 되는지 모르겠넹
                 .build();
 
 

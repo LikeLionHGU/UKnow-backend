@@ -5,6 +5,7 @@ import hgu.likelion.uknow.lecture.domain.entity.Lecture;
 import hgu.likelion.uknow.lecture.presentation.response.LectureResponse;
 import hgu.likelion.uknow.user.domain.entity.User;
 import hgu.likelion.uknow.user.presentation.response.UserResponse;
+import hgu.likelion.uknow.userPlan.presentation.response.PlanLectureResponse;
 import hgu.likelion.uknow.userlecture.domain.entity.UserLecture;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
@@ -37,4 +38,16 @@ public class UserLectureResponse { // 전체 리스트를 그냥 return 해줌
                 .lectureType(userLecture.getLectureType())
                 .build();
     }
+
+    public static UserLectureResponse toPlanLectureResponse(PlanLectureResponse userLecture) {
+        return UserLectureResponse.builder()
+                .id(null)
+                .lectureResponse(userLecture.getLectureResponse())
+                .year(null)
+                .semester(null)
+                .lectureType(userLecture.getLectureType())
+                .build();
+    }
+
+
 }
