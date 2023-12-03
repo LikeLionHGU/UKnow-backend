@@ -6,13 +6,16 @@ import hgu.likelion.uknow.lecture.domain.entity.Lecture;
 import hgu.likelion.uknow.lecture.domain.repository.LectureRepository;
 import hgu.likelion.uknow.lectureLike.domain.entity.LectureLike;
 import hgu.likelion.uknow.lectureLike.domain.repository.LectureLikeRepository;
+import hgu.likelion.uknow.lectureLike.presentation.response.LikeLectureResponse;
 import hgu.likelion.uknow.user.domain.entity.User;
 import hgu.likelion.uknow.user.domain.repository.UserRepository;
+import hgu.likelion.uknow.userPlan.presentation.response.PlanLectureResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -52,6 +55,18 @@ public class LectureLikeService {
 
         }
 
+    }
+
+    public List<LikeLectureResponse> getLikeLectureList(String studentId){
+
+        User user = userRepository.findById(studentId).orElseThrow(() -> new IllegalArgumentException("no such room"));
+
+        System.out.println("=====>2");
+        List<LectureLike> findLectureLike = lectureLikeRepository.findByUserId(user);
+        System.out.println("=====>3");
+        List<LikeLectureResponse> likeLecturelist = findLectureLike.stream().map(LikeLectureResponse::toResponse).collect(Collectors.toList());
+
+        return likeLecturelist;
     }
 
     public boolean isLectureLike(Long lecture_id, String studentId) {

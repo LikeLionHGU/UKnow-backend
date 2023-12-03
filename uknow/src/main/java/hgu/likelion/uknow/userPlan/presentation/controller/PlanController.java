@@ -7,6 +7,7 @@ import hgu.likelion.uknow.lectureLike.application.service.LectureLikeService;
 import hgu.likelion.uknow.user.application.service.UserService;
 import hgu.likelion.uknow.userPlan.application.dto.PlanTableDto;
 import hgu.likelion.uknow.userPlan.application.service.PlanService;
+import hgu.likelion.uknow.userPlan.presentation.request.PlanLectureRequest;
 import hgu.likelion.uknow.userPlan.presentation.request.PlanTableRequest;
 import hgu.likelion.uknow.userPlan.presentation.response.NeedCreditInfoResponse;
 import hgu.likelion.uknow.userPlan.presentation.response.PlanInfoResponse;
@@ -46,10 +47,18 @@ public class PlanController {
     }
 
 
-    @GetMapping("/addPlanLecture/{planTable_id}/{lecture_id}/{enum}")
-    public ResponseEntity<Boolean> addPlanLecture(@PathVariable Long planTable_id, @PathVariable Long lecture_id, @PathVariable("enum") LectureType lectureType) {
+    @PostMapping("/addPlanLecture/{planTable_id}/{planLecture_id}/{enum_type}")
+    public ResponseEntity<Boolean> addPlanLecture(@PathVariable Long planTable_id, @PathVariable Long planLecture_id, @PathVariable LectureType enum_type){
 
-        Boolean result = planService.addPlanLecture(planTable_id, lecture_id, lectureType);
+        Boolean result = planService.addPlanLecture(planTable_id,planLecture_id, enum_type);
+
+        return ResponseEntity.ok(result);
+    }
+
+    @DeleteMapping("/deletePlanLecture/{planTable_id}/{planLecture_id}")
+    public ResponseEntity<Boolean> deletePlanLecture(@PathVariable Long planTable_id, @PathVariable Long planLecture_id) {
+
+        Boolean result = planService.deletePlanLecture(planTable_id,planLecture_id);
         //System.out.println(result);
         //String s = "리턴값으로 채워야 하는 학점 수, 과목 정보도줘야 하나요?";
         return ResponseEntity.ok(result);
@@ -83,7 +92,6 @@ public class PlanController {
         String studentId = userInfoList.get(0).get(1).get(1);
 
         List<NeedCreditInfoResponse> n = planService.needCreditInfo(studentId);
-
 
         return ResponseEntity.ok(n);
     }

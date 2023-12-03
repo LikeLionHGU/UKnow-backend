@@ -19,13 +19,13 @@ import lombok.*;
 @AllArgsConstructor
 public class PlanLectureResponse {
 
-    private Long id;
+    private Long planLectureId;
     private LectureResponse lectureResponse;
     private LectureType lectureType;
 
     public static PlanLectureResponse toResponse(PlanLecture planLecture) {
         return PlanLectureResponse.builder()
-                .id(planLecture.getId())
+                .planLectureId(planLecture.getId())
                 .lectureResponse(LectureResponse.toResponse(planLecture.getLecture()))
                 .lectureType(planLecture.getLectureType())
                 .build();
