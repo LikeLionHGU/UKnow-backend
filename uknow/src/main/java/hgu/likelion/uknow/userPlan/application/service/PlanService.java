@@ -50,6 +50,33 @@ public class PlanService {
         return newPlanTable.getId();
     }
 
+    public Boolean deletePlanLecture(Long planTable_id, Long lecture_id){
+
+        System.out.println("===>1");
+        PlanTable planTable = planTableRepository.findById(planTable_id).orElseThrow(() -> new IllegalArgumentException("no such scrapFolder"));
+        System.out.println("===>2");
+        Lecture lecture = lectureRepository.findById(Long.toString(lecture_id)).orElseThrow(() -> new IllegalArgumentException("no such question"));
+
+        LectureType bigLectureType = null;
+
+        List<PlanLecture> findPlanLecture = planLectureRepository.findByPlanTableIdAndLectureId(planTable.getId(), lecture.getId());
+        System.out.println(planTable.getTableName() + " + " + lecture.getName());
+
+
+        if (findPlanLecture.isEmpty()) {
+            // 없으면 지우기 오류
+
+            return false;
+        } else {
+
+            //있으면 지우기
+            planLectureRepository.deleteById(findPlanLecture.get(0).getId());
+            return true;
+
+        }
+
+    }
+
     @Transactional
     public Boolean addPlanLecture(Long planTable_id, Long lecture_id, LectureType lectureType) {
         System.out.println("===>1");
@@ -129,7 +156,7 @@ public class PlanService {
 
             return true;
         } else {
-            // 중복이라면 백에서 처리 해주나요? 프론트에서 처리해주나욤
+
 
             return false;
 
