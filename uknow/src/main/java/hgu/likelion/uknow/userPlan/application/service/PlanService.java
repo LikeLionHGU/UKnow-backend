@@ -3,7 +3,9 @@ package hgu.likelion.uknow.userPlan.application.service;
 import hgu.likelion.uknow.common.LectureType;
 import hgu.likelion.uknow.lecture.domain.entity.Lecture;
 import hgu.likelion.uknow.lecture.domain.repository.LectureRepository;
+import hgu.likelion.uknow.lectureLike.application.service.LectureLikeService;
 import hgu.likelion.uknow.lectureLike.domain.repository.LectureLikeRepository;
+import hgu.likelion.uknow.lectureLike.presentation.response.LikeLectureResponse;
 import hgu.likelion.uknow.user.domain.entity.User;
 import hgu.likelion.uknow.user.domain.repository.UserRepository;
 import hgu.likelion.uknow.userPlan.application.dto.PlanTableDto;
@@ -37,6 +39,7 @@ public class PlanService {
     private final PlanTableRepository planTableRepository;
     private final PlanLectureRepository planLectureRepository;
     private final UserLectureRepository userLectureRepository;
+    private final LectureLikeService lectureLikeService;
 
     @Transactional
     public Long addPlanTable(PlanTableDto dto, String studentId) {
@@ -49,6 +52,25 @@ public class PlanService {
 
         return newPlanTable.getId();
     }
+
+    @Transactional
+    public List<Object> planAllInfo(String studentId) {
+        List<PlanInfoResponse> planInfoResponse = planInfo(studentId);
+        List<NeedCreditInfoResponse> needCreditInfoResponse = needCreditInfo(studentId);
+        List<LikeLectureResponse> likeLectureResponse = lectureLikeService.getLikeLectureList(studentId);
+
+
+        List<Object> objectList = new ArrayList<>();
+        objectList.add(planInfoResponse);
+        objectList.add(needCreditInfoResponse);
+        objectList.add(likeLectureResponse);
+
+        System.out.println("Object List: " + objectList);
+
+        return objectList;
+    }
+
+    List<Object> objectList = new ArrayList<>();
 
     public Boolean deletePlanLecture(Long planTable_id, Long lecture_id){
 

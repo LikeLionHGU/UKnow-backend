@@ -46,6 +46,23 @@ public class PlanController {
         return ResponseEntity.ok(savedId);
     }
 
+    @GetMapping("/getPlanAllInfo")
+    public ResponseEntity<List<Object>> planAllInfo(HttpServletRequest request) {
+
+        String session = userService.getSession(jwtProvider.resolveToken(request));
+
+
+        String userInfo = hisnetService.getUserInfo(session);
+        List<List<List<String>>> userInfoList = hisnetService.parseData(userInfo);
+        String studentId = userInfoList.get(0).get(1).get(1);
+
+        System.out.println(studentId);
+
+        List<Object> savedId = planService.planAllInfo(studentId);
+        return ResponseEntity.ok(savedId);
+    }
+
+
 
     @PostMapping("/addPlanLecture/{planTable_id}/{planLecture_id}/{enum_type}")
     public ResponseEntity<Boolean> addPlanLecture(@PathVariable Long planTable_id, @PathVariable Long planLecture_id, @PathVariable LectureType enum_type){
