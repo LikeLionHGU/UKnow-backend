@@ -115,14 +115,21 @@ public class UserService {
                             Lecture newLecture = Lecture.toAdd(code, name, credit, null, null, type);
                             lectureRepository.save(newLecture);
 
-                            UserLecture userLecture = UserLecture.toAdd(year, semester, user, newLecture, lectureType);
-                            userLectureRepository.save(userLecture);
+                            UserLecture test = userLectureRepository.findByStudentIdAndLectureId(user.getStudentId(), newLecture.getId());
+
+                            if(test == null) {
+                                UserLecture userLecture = UserLecture.toAdd(year, semester, user, newLecture, lectureType);
+                                userLectureRepository.save(userLecture);
+                            }
+
 
                         } else {
 
+                            UserLecture test = userLectureRepository.findByStudentIdAndLectureId(user.getStudentId(), lecture.get(0).getId());
 
                             UserLecture userLecture = UserLecture.toAdd(year, semester, user, lecture.get(0), lectureType);
                             userLectureRepository.save(userLecture);
+
 
                         }
 
