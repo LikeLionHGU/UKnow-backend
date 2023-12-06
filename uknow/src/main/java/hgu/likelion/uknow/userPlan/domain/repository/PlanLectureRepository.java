@@ -10,4 +10,5 @@ import java.util.List;
 public interface PlanLectureRepository extends JpaRepository<PlanLecture, Long> {
 
     List<PlanLecture> findByPlanTableIdAndLectureId(Long planTable_id, Long lecture_id);
+    List<PlanLecture> findByPlanTableId(Long planTable_id);
 }
