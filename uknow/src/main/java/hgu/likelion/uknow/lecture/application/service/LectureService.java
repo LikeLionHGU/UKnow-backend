@@ -506,10 +506,6 @@ public class LectureService {
                 returnList.add(GEK20053.get(0));
             }
 
-            if (ITP20002.size() != 0) {
-                returnList.add(ITP20002.get(0));
-            }
-
             if (CCE30023.size() != 0) {
                 returnList.add(CCE30023.get(0));
             }
@@ -549,6 +545,10 @@ public class LectureService {
                 returnList.add(GEK10094.get(0));
             }
 
+            if (ITP20002.size() != 0) {
+                returnList.add(ITP20002.get(0));
+            }
+
             for (int i = 0; i < codes.size(); i++) {
                 for (int j = 0; j < returnList.size(); j++) {
                     if (codes.get(i).equals(returnList.get(j).getCode())) {
@@ -573,7 +573,6 @@ public class LectureService {
             List<LectureResponse> GEK10057 = lectureRepository.findLecturesByCode("GEK10057").stream().map(LectureResponse::toResponse).collect(Collectors.toList());
             List<LectureResponse> GEK10058 = lectureRepository.findLecturesByCode("GEK10058").stream().map(LectureResponse::toResponse).collect(Collectors.toList());
             List<LectureResponse> GEK10094 = lectureRepository.findLecturesByCode("GEK10094").stream().map(LectureResponse::toResponse).collect(Collectors.toList());
-            List<LectureResponse> ITP20002 = lectureRepository.findLecturesByCode("ITP20002").stream().map(LectureResponse::toResponse).collect(Collectors.toList()); // 이산 수학
 
             for (int i = 0; i < userLectureResponseList.size(); i++) {
                 codes.add(userLectureResponseList.get(i).getLectureResponse().getCode());
@@ -581,9 +580,6 @@ public class LectureService {
 
             if (GEK10090.size() != 0) {
                 returnList.add(GEK10090.get(0));
-            }
-            if (ITP20002.size() != 0) {
-                returnList.add(ITP20002.get(0));
             }
 
             if (GEK10055.size() != 0) {
