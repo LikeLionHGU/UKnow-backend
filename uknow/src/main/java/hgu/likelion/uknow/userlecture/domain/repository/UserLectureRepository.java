@@ -16,4 +16,7 @@ public interface UserLectureRepository extends JpaRepository<UserLecture, Long> 
 
     @Query("select r from UserLecture r where r.user.studentId = :studentId and r.lectureType = :type")
     List<UserLecture> findByStudentIdAAndLectureType(@Param("studentId") String studentId, @Param("type")LectureType type);
+
+    @Query("select r from UserLecture r where r.user.studentId = :studentId and r.lecture.id = :lectureId")
+    UserLecture findByStudentIdAndLectureId(@Param("studentId") String studentId, @Param("lectureId")Long lectureId);
 }
