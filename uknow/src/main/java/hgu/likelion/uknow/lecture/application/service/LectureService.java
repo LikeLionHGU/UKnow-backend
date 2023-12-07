@@ -4,6 +4,8 @@ import hgu.likelion.uknow.common.LectureType;
 import hgu.likelion.uknow.lecture.domain.entity.Lecture;
 import hgu.likelion.uknow.lecture.domain.repository.LectureRepository;
 import hgu.likelion.uknow.lecture.presentation.response.LectureResponse;
+import hgu.likelion.uknow.lectureLike.domain.entity.LectureLike;
+import hgu.likelion.uknow.lectureLike.domain.repository.LectureLikeRepository;
 import hgu.likelion.uknow.userlecture.application.service.UserLectureService;
 import hgu.likelion.uknow.userlecture.presentation.response.UserLectureResponse;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
 public class LectureService {
     private final LectureRepository lectureRepository;
     private final UserLectureService userLectureService;
+    private final LectureLikeRepository lectureLikeRepository;
 
     @Transactional
     public void addLecture(List<List<String>> lectureList) {
@@ -107,11 +110,6 @@ public class LectureService {
 
             int index = 0;
 
-            while (lectureResponseList.get(index) != null) {
-
-
-            }
-
             for (int i = 0; i < userLectureResponseList.size(); i++) {
                 if (userLectureResponseList.get(i).getLectureResponse().getNonMajor().equals("신앙1")) { // 채플에 해당하는 값을 가져오는 리스트
                     chapelList.add(userLectureResponseList.get(i));
@@ -127,6 +125,19 @@ public class LectureService {
                     }
                 }
             }
+
+            for(int i = 0; i < lectureResponseList.size(); i++) {
+                Long code = lectureResponseList.get(i).getId();
+                LectureLike lectureLike = lectureLikeRepository.findByLectureIdAndUserId(studentId, code);
+
+                if(lectureLike != null) {
+                    lectureResponseList.get(i).setIsLiked(true);
+                } else {
+                    lectureResponseList.get(i).setIsLiked(false);
+                }
+            }
+
+
             return lectureResponseList;
 
         } else if (lectureType.equals(LectureType.firstFaith)) {
@@ -150,6 +161,17 @@ public class LectureService {
 
                         // 전체 리스트에서 사용자가 들은 과목들은 제거해주는 과정
                     }
+                }
+            }
+
+            for(int i = 0; i < lectureResponseList.size(); i++) {
+                Long code = lectureResponseList.get(i).getId();
+                LectureLike lectureLike = lectureLikeRepository.findByLectureIdAndUserId(studentId, code);
+
+                if(lectureLike != null) {
+                    lectureResponseList.get(i).setIsLiked(true);
+                } else {
+                    lectureResponseList.get(i).setIsLiked(false);
                 }
             }
 
@@ -177,6 +199,18 @@ public class LectureService {
                     }
                 }
             }
+
+            for(int i = 0; i < lectureResponseList.size(); i++) {
+                Long code = lectureResponseList.get(i).getId();
+                LectureLike lectureLike = lectureLikeRepository.findByLectureIdAndUserId(studentId, code);
+
+                if(lectureLike != null) {
+                    lectureResponseList.get(i).setIsLiked(true);
+                } else {
+                    lectureResponseList.get(i).setIsLiked(false);
+                }
+            }
+
             return lectureResponseList;
 
         } else if (lectureType.equals(LectureType.firstWorld)) {
@@ -200,6 +234,18 @@ public class LectureService {
                     }
                 }
             }
+
+            for(int i = 0; i < lectureResponseList.size(); i++) {
+                Long code = lectureResponseList.get(i).getId();
+                LectureLike lectureLike = lectureLikeRepository.findByLectureIdAndUserId(studentId, code);
+
+                if(lectureLike != null) {
+                    lectureResponseList.get(i).setIsLiked(true);
+                } else {
+                    lectureResponseList.get(i).setIsLiked(false);
+                }
+            }
+
             return lectureResponseList;
 
         } else if (lectureType.equals(LectureType.secondWorld)) {
@@ -223,6 +269,18 @@ public class LectureService {
                     }
                 }
             }
+
+            for(int i = 0; i < lectureResponseList.size(); i++) {
+                Long code = lectureResponseList.get(i).getId();
+                LectureLike lectureLike = lectureLikeRepository.findByLectureIdAndUserId(studentId, code);
+
+                if(lectureLike != null) {
+                    lectureResponseList.get(i).setIsLiked(true);
+                } else {
+                    lectureResponseList.get(i).setIsLiked(false);
+                }
+            }
+
             return lectureResponseList;
 
 
@@ -255,6 +313,17 @@ public class LectureService {
                 }
             }
 
+            for(int i = 0; i < lectureResponseList.size(); i++) {
+                Long code = lectureResponseList.get(i).getId();
+                LectureLike lectureLike = lectureLikeRepository.findByLectureIdAndUserId(studentId, code);
+
+                if(lectureLike != null) {
+                    lectureResponseList.get(i).setIsLiked(true);
+                } else {
+                    lectureResponseList.get(i).setIsLiked(false);
+                }
+            }
+
             return lectureResponseList;
 
         } else if (lectureType.equals(LectureType.service)) {
@@ -281,6 +350,17 @@ public class LectureService {
                 }
             }
 
+            for(int i = 0; i < lectureResponseList.size(); i++) {
+                Long code = lectureResponseList.get(i).getId();
+                LectureLike lectureLike = lectureLikeRepository.findByLectureIdAndUserId(studentId, code);
+
+                if(lectureLike != null) {
+                    lectureResponseList.get(i).setIsLiked(true);
+                } else {
+                    lectureResponseList.get(i).setIsLiked(false);
+                }
+            }
+
             return lectureResponseList;
 
         } else if (lectureType == LectureType.edu) {
@@ -299,6 +379,17 @@ public class LectureService {
             if (eduList.size() == 1) {
                 return null;
             } else {
+                for(int i = 0; i < lectureResponseList.size(); i++) {
+                    Long code = lectureResponseList.get(i).getId();
+                    LectureLike lectureLike = lectureLikeRepository.findByLectureIdAndUserId(studentId, code);
+
+                    if(lectureLike != null) {
+                        lectureResponseList.get(i).setIsLiked(true);
+                    } else {
+                        lectureResponseList.get(i).setIsLiked(false);
+                    }
+                }
+
                 return lectureResponseList;
             }
 
@@ -352,6 +443,17 @@ public class LectureService {
             if (EAP == false) {
                 returnList.add(LectureResponse.toResponse(EAPLecture.get(0)));
                 returnList.add(LectureResponse.toResponse(EAPLectureSecond.get(0)));
+            }
+
+            for(int i = 0; i < returnList.size(); i++) {
+                Long code = returnList.get(i).getId();
+                LectureLike lectureLike = lectureLikeRepository.findByLectureIdAndUserId(studentId, code);
+
+                if(lectureLike != null) {
+                    returnList.get(i).setIsLiked(true);
+                } else {
+                    returnList.get(i).setIsLiked(false);
+                }
             }
 
             return returnList;
@@ -430,6 +532,17 @@ public class LectureService {
                         returnList.remove(j);
                         j--;
                     }
+                }
+            }
+
+            for(int i = 0; i < returnList.size(); i++) {
+                Long code = returnList.get(i).getId();
+                LectureLike lectureLike = lectureLikeRepository.findByLectureIdAndUserId(studentId, code);
+
+                if(lectureLike != null) {
+                    returnList.get(i).setIsLiked(true);
+                } else {
+                    returnList.get(i).setIsLiked(false);
                 }
             }
 
@@ -557,6 +670,16 @@ public class LectureService {
                     }
                 }
             }
+            for(int i = 0; i < returnList.size(); i++) {
+                Long code = returnList.get(i).getId();
+                LectureLike lectureLike = lectureLikeRepository.findByLectureIdAndUserId(studentId, code);
+
+                if(lectureLike != null) {
+                    returnList.get(i).setIsLiked(true);
+                } else {
+                    returnList.get(i).setIsLiked(false);
+                }
+            }
 
             return returnList;
 
@@ -619,6 +742,17 @@ public class LectureService {
                 }
             }
 
+            for(int i = 0; i < returnList.size(); i++) {
+                Long code = returnList.get(i).getId();
+                LectureLike lectureLike = lectureLikeRepository.findByLectureIdAndUserId(studentId, code);
+
+                if(lectureLike != null) {
+                    returnList.get(i).setIsLiked(true);
+                } else {
+                    returnList.get(i).setIsLiked(false);
+                }
+            }
+
             return returnList;
 
 
@@ -671,6 +805,17 @@ public class LectureService {
                         returnList.remove(j);
                         j--;
                     }
+                }
+            }
+
+            for(int i = 0; i < returnList.size(); i++) {
+                Long code = returnList.get(i).getId();
+                LectureLike lectureLike = lectureLikeRepository.findByLectureIdAndUserId(studentId, code);
+
+                if(lectureLike != null) {
+                    returnList.get(i).setIsLiked(true);
+                } else {
+                    returnList.get(i).setIsLiked(false);
                 }
             }
 
@@ -1469,6 +1614,17 @@ public class LectureService {
                 }
             }
 
+            for(int i = 0; i < returnList.size(); i++) {
+                Long code = returnList.get(i).getId();
+                LectureLike lectureLike = lectureLikeRepository.findByLectureIdAndUserId(studentId, code);
+
+                if(lectureLike != null) {
+                    returnList.get(i).setIsLiked(true);
+                } else {
+                    returnList.get(i).setIsLiked(false);
+                }
+            }
+
 
             return returnList;
 
@@ -1610,6 +1766,17 @@ public class LectureService {
                         }
 
                     }
+                }
+            }
+
+            for(int i = 0; i < returnList.size(); i++) {
+                Long code = returnList.get(i).getId();
+                LectureLike lectureLike = lectureLikeRepository.findByLectureIdAndUserId(studentId, code);
+
+                if(lectureLike != null) {
+                    returnList.get(i).setIsLiked(true);
+                } else {
+                    returnList.get(i).setIsLiked(false);
                 }
             }
 
@@ -1809,6 +1976,18 @@ public class LectureService {
                     }
                 }
             }
+
+            for(int i = 0; i < returnList.size(); i++) {
+                Long code = returnList.get(i).getId();
+                LectureLike lectureLike = lectureLikeRepository.findByLectureIdAndUserId(studentId, code);
+
+                if(lectureLike != null) {
+                    returnList.get(i).setIsLiked(true);
+                } else {
+                    returnList.get(i).setIsLiked(false);
+                }
+            }
+
             return returnList;
 
         } else if (lectureType.equals(LectureType.design)) {
@@ -1941,6 +2120,16 @@ public class LectureService {
             }
 
 
+            for(int i = 0; i < returnList.size(); i++) {
+                Long code = returnList.get(i).getId();
+                LectureLike lectureLike = lectureLikeRepository.findByLectureIdAndUserId(studentId, code);
+
+                if(lectureLike != null) {
+                    returnList.get(i).setIsLiked(true);
+                } else {
+                    returnList.get(i).setIsLiked(false);
+                }
+            }
 
 
             return returnList;

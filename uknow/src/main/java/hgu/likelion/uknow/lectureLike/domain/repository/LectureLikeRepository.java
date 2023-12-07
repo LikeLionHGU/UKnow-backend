@@ -17,4 +17,7 @@ public interface LectureLikeRepository extends JpaRepository<LectureLike, Long>{
     //void  deleteByLikerIdAndAnswerId(Member liker_id, Answer answer_id);
 
     List<LectureLike> findByUserId(User user_studentId);
+
+    @Query("select r from LectureLike r where r.userId.studentId = :studentId and r.lectureId.id =:lectureId")
+    LectureLike findByLectureIdAndUserId(@Param("studentId") String studentId, @Param("lectureId") Long lectureId);
 }
