@@ -23,6 +23,8 @@ public class LectureResponse {
 
     String type;
 
+    Boolean isLiked;
+
     public static LectureResponse toResponse(Lecture lecture) {
         return LectureResponse.builder()
                 .id(lecture.getId())
