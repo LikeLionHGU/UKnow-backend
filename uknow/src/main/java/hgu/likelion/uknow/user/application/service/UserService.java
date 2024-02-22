@@ -34,7 +34,7 @@ public class UserService {
     }
 
     @Transactional
-    public User addUser(List<List<List<String>>> userInfoList) { // test test
+    public User addUser(List<List<List<String>>> userInfoList) { // test test 123
         String name = userInfoList.get(0).get(0).get(3);
         String studentId = userInfoList.get(0).get(1).get(1);
         String semester = userInfoList.get(0).get(2).get(1);
