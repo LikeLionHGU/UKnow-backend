@@ -34,7 +34,7 @@ public class UserService {
     }
 
     @Transactional
-    public User addUser(List<List<List<String>>> userInfoList) {
+    public User addUser(List<List<List<String>>> userInfoList) { // test
         String name = userInfoList.get(0).get(0).get(3);
         String studentId = userInfoList.get(0).get(1).get(1);
         String semester = userInfoList.get(0).get(2).get(1);
@@ -125,7 +125,7 @@ public class UserService {
 
                         } else {
 
-                            UserLecture test = userLectureRepository.findByStudentIdAndLectureId(user.getStudentId(), lecture.get(0).getId());
+//                            UserLecture test = userLectureRepository.findByStudentIdAndLectureId(user.getStudentId(), lecture.get(0).getId());
 
                             UserLecture userLecture = UserLecture.toAdd(year, semester, user, lecture.get(0), lectureType);
                             userLectureRepository.save(userLecture);
